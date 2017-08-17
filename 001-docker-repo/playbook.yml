@@ -1,0 +1,74 @@
+---
+- hosts: all
+  sudo: yes
+
+  tasks:
+    - name: Install list of packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - epel-release
+        - python-pip
+        - python-devel
+    - name: Make sure the pip folder
+      file:
+        path: ~/.pip
+        state: directory
+    - name: pip mirror
+      template:
+        src: pip.conf.j2
+        dest: ~/.pip/pip.conf
+        force: yes
+    - name: Install Pip Packages
+      pip:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - pip
+        - docker
+    - name: Ensure docker and dependencies are installed
+      yum:
+        list: "docker-ce"
+      register: pkg
+    - name: Install docker rpm from a remote repo
+      yum:
+        name: /vagrant/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
+        state: present
+      when: pkg.results|selectattr("yumstate", "match", "installed")|list|length == 0
+    - name: Make sure docker is running
+      systemd:
+        name: docker
+        state: started
+        enabled: True
+    - name: Make sure the directory for docker image is existed
+      file:
+        path: /opt/registry
+        state: directory
+    - name: registry repo folder existance judge
+      stat:
+        path: /opt/registry/docker/registry/v2/repositories/lokolla
+      register: repo_st
+    - name: docker image centos-binary-registry-ocata.tar.gz is existed
+      stat:
+        path: /vagrant/centos-binary-registry-ocata.tar.gz
+      register: gz_st
+    - name: Download the image file
+      get_url:
+        url: http://tarballs.openstack.org/kolla/images/centos-binary-registry-ocata.tar.gz
+        dest: /vagrant/centos-binary-registry-ocata.tar.gz
+      when: not ( gz_st.stat.exists  and repo_st.stat.exists)
+    - name: unzip the file to /opt/registry
+      shell: |
+        tar zxvf /vagrant/centos-binary-registry-ocata.tar.gz -C /opt/registry/
+      when: not repo_st.stat.exists
+    - name: Make sure the registry2 is running
+      docker_container:
+        name: registry
+        state: started
+        image: registry:2
+        restart_policy: always
+        ports:
+          - "5000:5000"
+        volumes:
+          - "/opt/registry:/var/lib/registry"
