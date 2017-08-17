@@ -1,12 +1,12 @@
 Vagrant.configure("2") do |config|
 
-  config.vm.define "kolla-multi-repo" do |app|
+  config.vm.define "001-docker-repo" do |app|
     app.vm.provider "virtualbox" do |vb|
       vb.gui = false
       vb.memory = "4096"
       vb.cpus = 4
     end
-    app.vm.hostname = "kolla-multi-repo"
+    app.vm.hostname = "001-docker-repo"
     app.vm.box = "bento/centos-7.3"
     app.vm.box_check_update = false
     app.ssh.insert_key = false
