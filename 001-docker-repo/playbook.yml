@@ -49,15 +49,14 @@
       stat:
         path: /opt/registry/docker/registry/v2/repositories/lokolla
       register: repo_st
-    - name: docker image centos-binary-registry-ocata.tar.gz is existed
+    - name: Judge docker image centos-binary-registry-ocata.tar.gz is existed
       stat:
         path: /vagrant/centos-binary-registry-ocata.tar.gz
       register: gz_st
-    - name: Download the image file
-      get_url:
-        url: http://tarballs.openstack.org/kolla/images/centos-binary-registry-ocata.tar.gz
-        dest: /vagrant/centos-binary-registry-ocata.tar.gz
-      when: not ( gz_st.stat.exists  and repo_st.stat.exists)
+    - name: Download the image file first
+      fail:
+        msg: "You should download centos-binary-registry-ocata.tar.gz first"
+      when: not gz_st.stat.exists
     - name: unzip the file to /opt/registry
       shell: |
         tar zxvf /vagrant/centos-binary-registry-ocata.tar.gz -C /opt/registry/
