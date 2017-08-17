@@ -169,5 +169,9 @@
         - { regexp: 'ssh-keygen -t rsa -f ~/.ssh/id_rsa', line: '    ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" '}
     - name: put the image for init-runonce to use
       copy:
-        src: /vagrant/cirros-0.3.4-x86_64-disk.img
-        dest: /usr/share/kolla-ansible/cirros-0.3.4-x86_64-disk.img
+        src: "{{ item.src}}"
+        dest: "{{ item.dest }}"
+      with_items:
+        - { src: '/vagrant/cirros-0.3.4-x86_64-disk.img',           dest: '/usr/share/kolla-ansible/'}
+        - { src: '/vagrant/xenial-server-cloudimg-amd64-disk1.img', dest: '/usr/share/kolla-ansible/'}
+        - { src: '/vagrant/create_ubuntu_image.sh',                 dest: '/usr/share/kolla-ansible/'}

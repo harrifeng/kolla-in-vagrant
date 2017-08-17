@@ -1,4 +1,4 @@
 stage.diff
 docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
-cirros-0.3.4-x86_64-disk.img
+*.img
 tmp/
