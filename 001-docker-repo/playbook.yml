@@ -36,11 +36,21 @@
         name: /vagrant/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
         state: present
       when: pkg.results|selectattr("yumstate", "match", "installed")|list|length == 0
+    - name: Ensure docker.etc directory is existed
+      file:
+        path: "/etc/docker"
+        state: directory
+    - name: Ensure docker.json had contents
+      template:
+        src: daemon.json.j2
+        dest: /etc/docker/daemon.json
+        force: yes
     - name: Make sure docker is running
       systemd:
         name: docker
         state: started
         enabled: True
+        daemon_reload: yes
     - name: Make sure the directory for docker image is existed
       file:
         path: /opt/registry
