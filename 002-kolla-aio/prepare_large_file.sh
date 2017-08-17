@@ -11,3 +11,10 @@ if [ -f $FILE2 ]; then
 else
     wget "http://download.cirros-cloud.net/0.3.4/$FILE2"
 fi
+
+FILE3='xenial-server-cloudimg-amd64-disk1.img'
+if [ -f $FILE3 ]; then
+    echo "$FILE is already here"
+else
+    wget "http://cloud-images.ubuntu.com/xenial/current/$FILE3"
+fi
