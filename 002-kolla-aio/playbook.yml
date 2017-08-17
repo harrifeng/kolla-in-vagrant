@@ -167,3 +167,7 @@
         - { regexp: '^EXT_NET_RANGE',   line: 'EXT_NET_RANGE="{{   ext_net_range   }}"'}
         - { regexp: '^EXT_NET_GATEWAY', line: 'EXT_NET_GATEWAY="{{ ext_net_gateway }}"'}
         - { regexp: 'ssh-keygen -t rsa -f ~/.ssh/id_rsa', line: '    ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" '}
+    - name: put the image for init-runonce to use
+      copy:
+        src: /vagrant/cirros-0.3.4-x86_64-disk.img
+        dest: /usr/share/kolla-ansible/cirros-0.3.4-x86_64-disk.img
