@@ -172,6 +172,6 @@
         src: "{{ item.src}}"
         dest: "{{ item.dest }}"
       with_items:
-        - { src: '/vagrant/cirros-0.3.4-x86_64-disk.img',           dest: '/usr/share/kolla-ansible/'}
-        - { src: '/vagrant/xenial-server-cloudimg-amd64-disk1.img', dest: '/usr/share/kolla-ansible/'}
-        - { src: '/vagrant/create_ubuntu_image.sh',                 dest: '/usr/share/kolla-ansible/'}
+        - { src: 'cirros-0.3.4-x86_64-disk.img',           dest: '/usr/share/kolla-ansible/'}
+        - { src: 'xenial-server-cloudimg-amd64-disk1.img', dest: '/usr/share/kolla-ansible/'}
+        - { src: 'create_ubuntu_image.sh',                 dest: '/usr/share/kolla-ansible/'}
