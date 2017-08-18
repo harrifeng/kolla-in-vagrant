@@ -172,3 +172,12 @@
         - { src: 'cirros-0.3.4-x86_64-disk.img',           dest: '/usr/share/kolla-ansible/'}
         - { src: 'xenial-server-cloudimg-amd64-disk1.img', dest: '/usr/share/kolla-ansible/'}
         - { src: 'create_ubuntu_image.sh',                 dest: '/usr/share/kolla-ansible/'}
+    - name: Modify the etc hosts file
+      lineinfile:
+        path: /etc/hosts
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^004-kolla-mul-controller',    line: '004-kolla-mul-controller 10.0.23.14'}
+        - { regexp: '^005-kolla-mul-sorage',        line: '004-kolla-mul-storage    10.0.23.15'}
+        - { regexp: '^006-kolla-mul-network',       line: '004-kolla-mul-network    10.0.23.16'}
