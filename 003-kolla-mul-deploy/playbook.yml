@@ -20,14 +20,11 @@
         - epel-release
         - python-pip
         - python-devel
-        # - libffi-devel
-        # - gcc
-        # - openssl-devel
-        # - libselinux-python
-        # - traceroute
-        # - ca-certificates
-        # - ntp
-        # - libselinux-python
+        - libffi-devel
+        - gcc
+        - openssl-devel
+        - libselinux-python
+        - ntp
     - name: Make sure the root bashrc
       template:
         src: bashrc.j2
