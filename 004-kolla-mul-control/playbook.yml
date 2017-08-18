@@ -4,6 +4,13 @@
 
   vars:
     systemd_docker_config_directory: /etc/systemd/system/docker.service.d
+    network_interface:          enp0s8
+    neutron_external_interface: enp0s9
+    kolla_internal_vip_address: "{{ '.'.join(vars['ansible_' + vars['network_interface']]['ipv4']['address'].split('.')[:3] + ['222']) }}"
+    external_ip: "{{ '.'.join(vars['ansible_' + vars['neutron_external_interface']]['ipv4']['address'].split('.')[:3]) }}"
+    ext_net_cidr:    "{{ external_ip }}.0/24"
+    ext_net_range:   "start={{ external_ip }}.100,end={{ external_ip }}.200"
+    ext_net_gateway: "{{ external_ip }}.1"
   tasks:
     - name: Install list of packages
       package:
@@ -40,6 +47,7 @@
         state: present
       with_items:
         - pip
+        - ansible
         - docker
     - name: Diable selinux
       selinux:
@@ -77,6 +85,11 @@
         src: daemon.json.j2
         dest: /etc/docker/daemon.json
         force: yes
+    - name: Find out the vm support
+      shell: |
+        egrep -c '(vmx|svm)' /proc/cpuinfo
+      register: vm_num
+      ignore_errors: yes
     - name: Restart docker systemd to take effect
       systemd:
         state: started

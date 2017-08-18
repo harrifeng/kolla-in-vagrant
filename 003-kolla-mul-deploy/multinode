@@ -2,7 +2,7 @@
 # additional groups are for more control of the environment.
 [control]
 # These hostname must be resolvable from your deployment host
-kolla-mul-controller-1
+004-kolla-mul-control
 
 # The above can also be specified as follows:
 #control[01:03]     ansible_user=kolla
@@ -10,20 +10,20 @@ kolla-mul-controller-1
 # The network nodes are where your l3-agent and loadbalancers will run
 # This can be the same as a host in the control group
 [network]
-kolla-mul-network-1
+005-kolla-mul-network
 
 [compute]
-kolla-mul-compute-1
+006-kolla-mul-compute
 
 [monitoring]
-kolla-mul-monitoring-1
+007-kolla-mul-monitoring
 
 # When compute nodes and control nodes use different interfaces,
 # you can specify "api_interface" and other interfaces like below:
 #compute01 neutron_external_interface=eth0 api_interface=em1 storage_interface=em1 tunnel_interface=em1
 
 [storage]
-kolla-mul-storage-1
+008-kolla-mul-storage
 
 [deployment]
 localhost       ansible_connection=local
