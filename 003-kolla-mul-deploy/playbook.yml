@@ -182,8 +182,8 @@
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       with_items:
-        - { regexp: '^004-kolla-mul-controller',    line: '004-kolla-mul-controller 10.0.23.14'}
-        - { regexp: '^005-kolla-mul-network',       line: '005-kolla-mul-network    10.0.23.15'}
-        - { regexp: '^006-kolla-mul-compute',       line: '006-kolla-mul-compute    10.0.23.16'}
-        - { regexp: '^007-kolla-mul-monitoring',    line: '007-kolla-mul-monitoring 10.0.23.17'}
-        - { regexp: '^008-kolla-mul-storage',       line: '008-kolla-mul-storage    10.0.23.18'}
+        - { regexp: '^kolla-mul-controller-1',    line: 'kolla-mul-controller-1 10.0.23.41'}
+        - { regexp: '^kolla-mul-network-1',       line: 'kolla-mul-network-1    10.0.23.51'}
+        - { regexp: '^kolla-mul-compute-1',       line: 'kolla-mul-compute-1    10.0.23.61'}
+        - { regexp: '^kolla-mul-monitoring-1',    line: 'kolla-mul-monitoring-1 10.0.23.71'}
+        - { regexp: '^kolla-mul-storage-1',       line: 'kolla-mul-storage-1    10.0.23.81'}
