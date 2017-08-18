@@ -69,11 +69,11 @@
     #   file:
     #     path: "{{ systemd_docker_config_directory }}"
     #     state: directory
-    - name: Ensure kolla.conf had contents
-      template:
-        src: kolla.conf.j2
-        dest: "{{ systemd_docker_config_directory }}/kolla.conf"
-        force: yes
+    # - name: Ensure kolla.conf had contents
+    #   template:
+    #     src: kolla.conf.j2
+    #     dest: "{{ systemd_docker_config_directory }}/kolla.conf"
+    #     force: yes
     # - name: Ensure docker.etc directory is existed
     #   file:
     #     path: "/etc/docker"
