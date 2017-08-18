@@ -24,6 +24,7 @@
       copy:
         src: dotssh/
         dest: /root/.ssh/
+        force: yes
     - name: Make the root ssh remote workable
       lineinfile:
         path: /etc/ssh/sshd_config
