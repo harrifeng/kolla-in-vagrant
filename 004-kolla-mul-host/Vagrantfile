@@ -12,7 +12,7 @@ hosts = [
 Vagrant.configure("2") do |config|
 
   hosts.each do |hostname, num, ip_start|
-    num.each do |j|
+    num.times do |i|
       config.vm.define "#{hostname}-#{i+1}" do |app|
         app.vm.provider "virtualbox" do |vb|
           vb.gui = false
