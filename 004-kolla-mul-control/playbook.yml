@@ -31,6 +31,7 @@
         line: 'PermitRootLogin yes'
     - name: Restart sshd serverce
       systemd:
+        name: sshd
         state: started
         daemon_reload: yes
         enabled: yes
