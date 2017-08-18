@@ -12,22 +12,22 @@
     ext_net_range:   "start={{ external_ip }}.100,end={{ external_ip }}.200"
     ext_net_gateway: "{{ external_ip }}.1"
   tasks:
-    # - name: Install list of packages
-    #   package:
-    #     name: "{{ item }}"
-    #     state: present
-    #   with_items:
-    #     - epel-release
-    #     - python-pip
-    #     - python-devel
-    #     - libffi-devel
-    #     - gcc
-    #     - openssl-devel
-    #     - libselinux-python
-    #     - traceroute
-    #     - ca-certificates
-    #     - ntp
-    #     - libselinux-python
+    - name: Install list of packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - epel-release
+        - python-pip
+        - python-devel
+        # - libffi-devel
+        # - gcc
+        # - openssl-devel
+        # - libselinux-python
+        # - traceroute
+        # - ca-certificates
+        # - ntp
+        # - libselinux-python
     - name: Make sure the root bashrc
       template:
         src: bashrc.j2
