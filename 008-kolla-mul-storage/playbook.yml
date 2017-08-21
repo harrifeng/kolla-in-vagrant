@@ -121,3 +121,6 @@
         src: ../config/hosts
         dest: /etc/hosts
         force: yes
+    - name: Initial the ceph storage or /dev/sdb
+      shell: |
+        parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
