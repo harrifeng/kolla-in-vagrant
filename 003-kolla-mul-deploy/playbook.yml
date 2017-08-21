@@ -25,12 +25,20 @@
         - openssl-devel
         - libselinux-python
         - ntp
+    - name: Ensure the ssh folder exist under root
+      file: path=/root/.ssh state=directory
     - name: Copy the ssh id_rsa
       copy:
         src: dotssh/id_rsa
         dest: /root/.ssh/id_rsa
         force: yes
         mode: 0600
+    - name: Copy the authorized_keys
+      copy:
+        src: dotssh/authorized_keys
+        dest: /root/.ssh/authorized_keys
+        force: yes
+        mode: 0644
     - name: Make the root ssh client no checking
       lineinfile:
         path: /etc/ssh/ssh_config
