@@ -50,8 +50,8 @@
         regexp: '^PermitRootLogin'
         line: 'PermitRootLogin yes'
     - name: Make sure the root bashrc
-      template:
-        src: bashrc.j2
+      copy:
+        src: dotssh/bashrc
         dest: ~/.bashrc
         force: yes
     - name: Make sure the pip folder
@@ -59,8 +59,8 @@
         path: ~/.pip
         state: directory
     - name: pip mirror
-      template:
-        src: pip.conf.j2
+      copy:
+        src: dotssh/pip.conf
         dest: ~/.pip/pip.conf
         force: yes
     - name: Install Pip Packages
@@ -118,8 +118,8 @@
         state: directory
       when: vm_num.stdout|int == 0
     - name: Ensure nova-compute.conf had contents
-      template:
-        src: nova-compute.conf.j2
+      copy:
+        src: dotssh/nova-compute.conf
         dest: /etc/kolla/config/nova/nova-compute.conf
       when: vm_num.stdout|int == 0
     - name: Ensure config had folder
@@ -127,8 +127,8 @@
         path: /etc/kolla/config/
         state: directory
     - name: Ensure ceph.conf had contents
-      template:
-        src: ceph.conf.j2
+      copy:
+        src: dotssh/ceph.conf
         dest: /etc/kolla/config/ceph.conf
     # - name: Restart docker systemd to take effect
     #   systemd:
