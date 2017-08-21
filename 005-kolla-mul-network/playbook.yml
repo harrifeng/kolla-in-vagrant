@@ -95,7 +95,7 @@
     - name: Ensure kolla.conf had contents
       copy:
         src: ../config/kolla.conf
-        dest: "{{ systemd_docker_../config_directory }}/kolla.conf"
+        dest: "{{ systemd_docker_config_directory }}/kolla.conf"
         force: yes
     - name: Ensure docker.etc directory is existed
       file:
