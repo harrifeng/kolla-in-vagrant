@@ -25,7 +25,9 @@
 #compute01 neutron_external_interface=eth0 api_interface=em1 storage_interface=em1 tunnel_interface=em1
 
 [storage]
-008-kolla-mul-storage
+008-1-kolla-mul-storage
+008-2-kolla-mul-storage
+008-3-kolla-mul-storage
 
 [deployment]
 localhost       ansible_connection=local
