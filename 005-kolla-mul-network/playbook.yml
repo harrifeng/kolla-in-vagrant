@@ -3,7 +3,7 @@
   sudo: yes
 
   vars:
-    systemd_docker_../config_directory: /etc/systemd/system/docker.service.d
+    systemd_docker_config_directory: /etc/systemd/system/docker.service.d
     network_interface:          enp0s8
     neutron_external_interface: enp0s9
     kolla_internal_vip_address: "{{ '.'.join(vars['ansible_' + vars['network_interface']]['ipv4']['address'].split('.')[:3] + ['222']) }}"
@@ -41,12 +41,12 @@
         mode: 0644
     - name: Make the root ssh client no checking
       lineinfile:
-        path: /etc/ssh/ssh_../config
+        path: /etc/ssh/ssh_config
         regexp: '^StrictHostKeyChecking'
         line: 'StrictHostKeyChecking no'
     - name: Make the root ssh remote workable
       lineinfile:
-        path: /etc/ssh/sshd_../config
+        path: /etc/ssh/sshd_config
         regexp: '^PermitRootLogin'
         line: 'PermitRootLogin yes'
     - name: Make sure the root bashrc
@@ -90,7 +90,7 @@
       when: pkg.results|selectattr("yumstate", "match", "installed")|list|length == 0
     - name: Ensure docker.service directory is existed
       file:
-        path: "{{ systemd_docker_../config_directory }}"
+        path: "{{ systemd_docker_config_directory }}"
         state: directory
     - name: Ensure kolla.conf had contents
       copy:
