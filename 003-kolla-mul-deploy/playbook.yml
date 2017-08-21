@@ -25,7 +25,7 @@
         - openssl-devel
         - libselinux-python
         - ntp
-    - name: Copy the ssh folder
+    - name: Copy the ssh id_rsa
       copy:
         src: dotssh/id_rsa
         dest: /root/.ssh/id_rsa
@@ -36,6 +36,11 @@
         path: /etc/ssh/ssh_config
         regexp: '^StrictHostKeyChecking'
         line: 'StrictHostKeyChecking no'
+    - name: Make the root ssh remote workable
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin yes'
     - name: Make sure the root bashrc
       template:
         src: bashrc.j2
