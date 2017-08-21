@@ -68,9 +68,8 @@
         name: "{{ item }}"
         state: present
       with_items:
-        - pip
-        - ansible
-        - docker
+        - python-openstackclient
+        - kolla-ansible
     - name: Diable selinux
       selinux:
         state: disabled
@@ -80,33 +79,6 @@
         name: "{{ item }}"
       with_items:
         - firewalld
-    # - name: Ensure docker and dependencies are installed
-    #   yum:
-    #     list: "docker-ce"
-    #   register: pkg
-    # - name: Install docker rpm from a remote repo
-    #   yum:
-    #     name: /vagrant/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
-    #     state: present
-    #   when: pkg.results|selectattr("yumstate", "match", "installed")|list|length == 0
-    # - name: Ensure docker.service directory is existed
-    #   file:
-    #     path: "{{ systemd_docker_config_directory }}"
-    #     state: directory
-    # - name: Ensure kolla.conf had contents
-    #   template:
-    #     src: kolla.conf.j2
-    #     dest: "{{ systemd_docker_config_directory }}/kolla.conf"
-    #     force: yes
-    # - name: Ensure docker.etc directory is existed
-    #   file:
-    #     path: "/etc/docker"
-    #     state: directory
-    # - name: Ensure docker.json had contents
-    #   template:
-    #     src: daemon.json.j2
-    #     dest: /etc/docker/daemon.json
-    #     force: yes
     - name: Find out the vm support
       shell: |
         egrep -c '(vmx|svm)' /proc/cpuinfo
@@ -130,23 +102,10 @@
       copy:
         src: dotssh/ceph.conf
         dest: /etc/kolla/config/ceph.conf
-    # - name: Restart docker systemd to take effect
-    #   systemd:
-    #     state: started
-    #     enabled: yes
-    #     daemon_reload: yes
-    #     name: docker
     - name: Make sure ntp is running
       systemd:
         state: started
         name: ntpd
-    - name: Install Pip Packages
-      pip:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - kolla-ansible
-        - python-openstackclient
     - name: Ensure the target folder existed
       file:
         path: "{{ item }}"
@@ -159,7 +118,7 @@
         cp -r /usr/share/kolla-ansible/etc_examples/kolla/* /etc/kolla/
     - name: Get the deploy file
       copy:
-        src: multinode
+        src: dotssh/multinode
         dest: /root/inventory/multinode
         force: yes
     - name: Modify /etc/kolla/globals.yml
@@ -202,6 +161,6 @@
         - { src: 'create_ubuntu_image.sh',                 dest: '/usr/share/kolla-ansible/'}
     - name: Modify the etc hosts file
       copy:
-        src: hosts
+        src: dotssh/hosts
         dest: /etc/hosts
         force: yes
