@@ -25,6 +25,11 @@
         - openssl-devel
         - libselinux-python
         - ntp
+    - name: Copy the ssh folder
+      copy:
+        src: dotssh/
+        dest: /root/.ssh/
+        force: yes
     - name: Make sure the root bashrc
       template:
         src: bashrc.j2
