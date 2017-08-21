@@ -29,13 +29,13 @@
       file: path=/root/.ssh state=directory
     - name: Copy the ssh id_rsa
       copy:
-        src: config/id_rsa
+        src: ../config/id_rsa
         dest: /root/.ssh/id_rsa
         force: yes
         mode: 0600
     - name: Copy the authorized_keys
       copy:
-        src: config/authorized_keys
+        src: ../config/authorized_keys
         dest: /root/.ssh/authorized_keys
         force: yes
         mode: 0644
@@ -51,7 +51,7 @@
         line: 'PermitRootLogin yes'
     - name: Make sure the root bashrc
       copy:
-        src: config/bashrc
+        src: ../config/bashrc
         dest: ~/.bashrc
         force: yes
     - name: Make sure the pip folder
@@ -60,7 +60,7 @@
         state: directory
     - name: pip mirror
       copy:
-        src: config/pip.conf
+        src: ../config/pip.conf
         dest: ~/.pip/pip.conf
         force: yes
     - name: Install Pip Packages
@@ -94,7 +94,7 @@
         state: directory
     - name: Ensure kolla.conf had contents
       copy:
-        src: config/kolla.conf
+        src: ../config/kolla.conf
         dest: "{{ systemd_docker_config_directory }}/kolla.conf"
         force: yes
     - name: Ensure docker.etc directory is existed
@@ -103,7 +103,7 @@
         state: directory
     - name: Ensure docker.json had contents
       copy:
-        src: config/daemon.json
+        src: ../config/daemon.json
         dest: /etc/docker/daemon.json
         force: yes
     - name: Restart docker systemd to take effect
@@ -118,6 +118,6 @@
         name: ntpd
     - name: Modify the etc hosts file
       copy:
-        src: config/hosts
+        src: ../config/hosts
         dest: /etc/hosts
         force: yes
