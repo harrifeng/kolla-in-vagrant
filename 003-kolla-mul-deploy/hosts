@@ -1,8 +1,8 @@
 127.0.0.1  localhost
 127.0.0.1  003-kolla-mul-deploy
 
-10.0.23.41  004-kolla-mul-control
-10.0.23.41  005-kolla-mul-network
-10.0.23.41  006-kolla-mul-compute
-10.0.23.41  007-kolla-mul-monitoring
-10.0.23.41  008-kolla-mul-storage
+10.0.25.41  004-kolla-mul-control
+10.0.25.41  005-kolla-mul-network
+10.0.25.41  006-kolla-mul-compute
+10.0.25.41  007-kolla-mul-monitoring
+10.0.25.41  008-kolla-mul-storage
