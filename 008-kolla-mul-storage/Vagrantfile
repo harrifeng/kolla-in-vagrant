@@ -3,7 +3,7 @@ require './vagrant-provision-reboot-plugin'
 storage_num = 3
 Vagrant.configure("2") do |config|
   storage_num.times do |i|
-    file_to_disk = './tmp/large_disk_#{i}.vdi'
+    file_to_disk = "./tmp/large_disk_#{i}.vdi"
     ip_last = 81 + i
     config.vm.define "008-#{i}-kolla-mul-storage" do |app|
       app.vm.provider "virtualbox" do |vb|
