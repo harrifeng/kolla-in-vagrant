@@ -29,13 +29,13 @@
       file: path=/root/.ssh state=directory
     - name: Copy the ssh id_rsa
       copy:
-        src: dotssh/id_rsa
+        src: config/id_rsa
         dest: /root/.ssh/id_rsa
         force: yes
         mode: 0600
     - name: Copy the authorized_keys
       copy:
-        src: dotssh/authorized_keys
+        src: config/authorized_keys
         dest: /root/.ssh/authorized_keys
         force: yes
         mode: 0644
@@ -51,7 +51,7 @@
         line: 'PermitRootLogin yes'
     - name: Make sure the root bashrc
       copy:
-        src: dotssh/bashrc
+        src: config/bashrc
         dest: ~/.bashrc
         force: yes
     - name: Make sure the pip folder
@@ -60,7 +60,7 @@
         state: directory
     - name: pip mirror
       copy:
-        src: dotssh/pip.conf
+        src: config/pip.conf
         dest: ~/.pip/pip.conf
         force: yes
     - name: Install Pip Packages
@@ -91,7 +91,7 @@
       when: vm_num.stdout|int == 0
     - name: Ensure nova-compute.conf had contents
       copy:
-        src: dotssh/nova-compute.conf
+        src: config/nova-compute.conf
         dest: /etc/kolla/config/nova/nova-compute.conf
       when: vm_num.stdout|int == 0
     - name: Ensure config had folder
@@ -100,7 +100,7 @@
         state: directory
     - name: Ensure ceph.conf had contents
       copy:
-        src: dotssh/ceph.conf
+        src: config/ceph.conf
         dest: /etc/kolla/config/ceph.conf
     - name: Make sure ntp is running
       systemd:
@@ -118,7 +118,7 @@
         cp -r /usr/share/kolla-ansible/etc_examples/kolla/* /etc/kolla/
     - name: Get the deploy file
       copy:
-        src: dotssh/multinode
+        src: config/multinode
         dest: /root/inventory/multinode
         force: yes
     - name: Modify /etc/kolla/globals.yml
@@ -161,6 +161,6 @@
         - { src: 'create_ubuntu_image.sh',                 dest: '/usr/share/kolla-ansible/'}
     - name: Modify the etc hosts file
       copy:
-        src: dotssh/hosts
+        src: config/hosts
         dest: /etc/hosts
         force: yes
