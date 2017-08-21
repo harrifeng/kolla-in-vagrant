@@ -69,6 +69,7 @@
         state: present
       with_items:
         - python-openstackclient
+        - ansible
         - kolla-ansible
     - name: Diable selinux
       selinux:
