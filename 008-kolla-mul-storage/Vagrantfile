@@ -1,11 +1,16 @@
 # Require the reboot plugin. selinux need to reboot to make sure it is closed
 require './vagrant-provision-reboot-plugin'
 Vagrant.configure("2") do |config|
+  file_to_disk = './tmp/large_disk.vdi'
   config.vm.define "008-kolla-mul-storage" do |app|
     app.vm.provider "virtualbox" do |vb|
       vb.gui = false
       vb.memory = "20480"
       vb.cpus = 4
+      unless File.exist?(file_to_disk)
+        vb.customize ['createhd', '--filename', file_to_disk, '--size', 500 * 1024]
+      end
+      vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk]
     end
 
     app.vm.hostname = "008-kolla-mul-storage"
