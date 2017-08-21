@@ -28,7 +28,7 @@
     - name: Make the root ssh remote workable
       lineinfile:
         path: /etc/ssh/sshd_config
-        regexp: '^PermitRootLogin yes'
+        regexp: '^PermitRootLogin'
         line: 'PermitRootLogin yes'
     - name: Restart sshd serverce
       systemd:
