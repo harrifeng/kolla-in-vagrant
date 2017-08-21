@@ -10,13 +10,15 @@
 # The network nodes are where your l3-agent and loadbalancers will run
 # This can be the same as a host in the control group
 [network]
-005-kolla-mul-network
+# 005-kolla-mul-network
+004-kolla-mul-control
 
 [compute]
-006-kolla-mul-compute
-
+# 006-kolla-mul-compute
+004-kolla-mul-control
 [monitoring]
-007-kolla-mul-monitoring
+# 007-kolla-mul-monitoring
+004-kolla-mul-control
 
 # When compute nodes and control nodes use different interfaces,
 # you can specify "api_interface" and other interfaces like below:
