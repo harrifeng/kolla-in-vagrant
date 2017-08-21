@@ -30,6 +30,11 @@
         src: dotssh/
         dest: /root/.ssh/
         force: yes
+    - name: Make the root ssh client no checking
+      lineinfile:
+        path: /etc/ssh/ssh_config
+        regexp: '^StrictHostKeyChecking'
+        line: 'StrictHostKeyChecking no'
     - name: Make sure the root bashrc
       template:
         src: bashrc.j2
