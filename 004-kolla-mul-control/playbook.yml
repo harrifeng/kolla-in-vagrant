@@ -22,10 +22,9 @@
         - ntp
     - name: Copy the ssh folder
       copy:
-        src: dotssh/id_rsa
-        dest: /root/.ssh/id_rsa
+        src: dotssh/
+        dest: /root/.ssh/
         force: yes
-        mode: 0600
     - name: Make the root ssh remote workable
       lineinfile:
         path: /etc/ssh/sshd_config
