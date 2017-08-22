@@ -55,3 +55,4 @@ build-iPhoneSimulator/
 test.yml
 *.rpm
 *.img
+000-*/
