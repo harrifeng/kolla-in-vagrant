@@ -39,6 +39,7 @@
       pip:
         name: "{{ item }}"
         state: present
+        extra_args: "--trusted-host 10.0.111.111"
       with_items: "{{ pypi_packages }}"
     - name: Make sure ntp is running
       systemd:
