@@ -1,5 +1,3 @@
-# Require the reboot plugin. selinux need to reboot to make sure it is closed
-require './vagrant-provision-reboot-plugin'
 Vagrant.configure("2") do |config|
   file_to_disk = './tmp/large_disk.vdi'
   hostname = File.basename(Dir.getwd)
@@ -34,6 +32,5 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "playbook.yml"
       ansible.sudo = true
     end
-    # app.vm.provision :unix_reboot
   end
 end
