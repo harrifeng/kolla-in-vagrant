@@ -26,5 +26,6 @@ download_if_not_here 'httpd' 'python-devel-2.7.5-48.el7.x86_64.rpm' 'ftp://195.2
 # kolla image
 download_if_not_here 'httpd' 'centos-binary-registry-ocata.tar.gz' 'http://tarballs.openstack.org/kolla/images'
 
-# cirros mirror
+# cloud image
 download_if_not_here 'httpd' 'cirros-0.3.5-x86_64-disk.img' 'http://download.cirros-cloud.net/0.3.5'
+downlaod_if_not_here 'httpd' 'xenial-server-cloudimg-amd64-disk1.img' 'http://cloud-images.ubuntu.com/xenial/current'
