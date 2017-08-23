@@ -17,7 +17,7 @@
         - /vagrant/httpd/python-devel-2.7.5-48.el7.x86_64.rpm
     - name: Install Pip Packages from local
       pip:
-        name: /vagrant/pypi/docker-2.5.0-py2.py3-none-any.whl
+        name: /vagrant/httpd/docker-2.5.0-py2.py3-none-any.whl
     - name: Ensure docker.etc directory is existed
       file:
         path: "/etc/docker"
