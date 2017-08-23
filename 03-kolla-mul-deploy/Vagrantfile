@@ -1,14 +1,13 @@
-# Require the reboot plugin. selinux need to reboot to make sure it is closed
-require './vagrant-provision-reboot-plugin'
 Vagrant.configure("2") do |config|
-  config.vm.define "003-kolla-mul-deploy" do |app|
+    hostname = File.basename(Dir.getwd)
+  config.vm.define "#{hostname}" do |app|
     app.vm.provider "virtualbox" do |vb|
       vb.gui = false
       vb.memory = "2048"
       vb.cpus = 2
     end
 
-    app.vm.hostname = "003-kolla-mul-deploy"
+    app.vm.hostname = "#{hostname}"
     app.vm.box = "bento/centos-7.3"
     if Vagrant.has_plugin?("vagrant-cachier")
       config.cache.scope = :box
@@ -28,6 +27,5 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "playbook.yml"
       ansible.sudo = true
     end
-    app.vm.provision :unix_reboot
   end
 end
