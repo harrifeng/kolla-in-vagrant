@@ -1,4 +1,5 @@
 #!/bin/bash
+IMAGE_URL=http://10.0.111.111:5001/
 IMAGE=xenial-server-cloudimg-amd64-disk1.img
 IMAGE_NAME=ubuntu1604
 IMAGE_TYPE=linux
@@ -33,6 +34,11 @@ fi
 if openstack image list | grep -q ${IMAGE_NAME}; then
     echo "Already had the image"
     exit
+fi
+
+echo Downloading glance image.
+if ! [ -f "${IMAGE}" ]; then
+    curl -L -o ./${IMAGE} ${IMAGE_URL}/${IMAGE}
 fi
 
 echo Creating glance image.
