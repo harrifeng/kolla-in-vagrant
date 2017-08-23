@@ -27,97 +27,79 @@
       - http://10.0.111.111:5001/ntp-4.2.6p5-25.el7.centos.x86_64.rpm
       - http://10.0.111.111:5001/python-devel-2.7.5-48.el7.x86_64.rpm
   tasks:
+    - name: Make sure the root bashrc
+      copy:
+        src: ../config/bashrc
+        dest: ~/.bashrc
+        force: yes
     - name: Install list of packages from local
       yum:
         name: "{{ item }}"
         state: present
       with_items: "{{ rpm_packages }}"
-    - name: Make sure the root bashrc
-      template:
-        src: bashrc.j2
-        dest: ~/.bashrc
-        force: yes
     - name: Install Pip Packages
       pip:
         name: "{{ item }}"
         state: present
       with_items: "{{ pypi_packages }}"
-    # - name: Diable selinux
-    #   selinux:
-    #     state: disabled
-    # - name: Make sure some service is disabled
-    #   systemd:
-    #     state: stopped
-    #     name: "{{ item }}"
-    #   with_items:
-    #     - firewalld
-    # - name: Ensure docker and dependencies are installed
-    #   yum:
-    #     list: "docker-ce"
-    #   register: pkg
-    # - name: Install docker rpm from a remote repo
-    #   yum:
-    #     name: /vagrant/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
-    #     state: present
-    #   when: pkg.results|selectattr("yumstate", "match", "installed")|list|length == 0
-    # - name: Ensure docker.service directory is existed
-    #   file:
-    #     path: "{{ systemd_docker_config_directory }}"
-    #     state: directory
-    # - name: Ensure kolla.conf had contents
-    #   template:
-    #     src: kolla.conf.j2
-    #     dest: "{{ systemd_docker_config_directory }}/kolla.conf"
-    #     force: yes
-    # - name: Ensure docker.etc directory is existed
-    #   file:
-    #     path: "/etc/docker"
-    #     state: directory
-    # - name: Ensure docker.json had contents
-    #   template:
-    #     src: daemon.json.j2
-    #     dest: /etc/docker/daemon.json
-    #     force: yes
-    # - name: Find out the vm support
-    #   shell: |
-    #     egrep -c '(vmx|svm)' /proc/cpuinfo
-    #   register: vm_num
-    #   ignore_errors: yes
-    # - name: Ensure nova-compute.conf had folder
-    #   file:
-    #     path: /etc/kolla/config/nova
-    #     state: directory
-    #   when: vm_num.stdout|int == 0
-    # - name: Ensure nova-compute.conf had contents
-    #   template:
-    #     src: nova-compute.conf.j2
-    #     dest: /etc/kolla/config/nova/nova-compute.conf
-    #   when: vm_num.stdout|int == 0
-    # - name: Ensure config had folder
-    #   file:
-    #     path: /etc/kolla/config/
-    #     state: directory
-    # - name: Ensure ceph.conf had contents
-    #   template:
-    #     src: ceph.conf.j2
-    #     dest: /etc/kolla/config/ceph.conf
-    # - name: Restart docker systemd to take effect
-    #   systemd:
-    #     state: started
-    #     enabled: yes
-    #     daemon_reload: yes
-    #     name: docker
-    # - name: Make sure ntp is running
-    #   systemd:
-    #     state: started
-    #     name: ntpd
-    # - name: Install Pip Packages
-    #   pip:
-    #     name: "{{ item }}"
-    #     state: present
-    #   with_items:
-    #     - kolla-ansible
-    #     - python-openstackclient
+    - name: Make sure ntp is running
+      systemd:
+        state: started
+        name: ntpd
+    - name: Make sure firewalld is disabled
+      systemd:
+        state: stopped
+        name: firewalld
+    - name: Diable selinux
+      selinux:
+        state: disabled
+    - name: Ensure docker.service directory is existed
+      file:
+        path: "{{ systemd_docker_config_directory }}"
+        state: directory
+    - name: Ensure kolla.conf had contents
+      copy:
+        src: ../config/kolla.conf
+        dest: "{{ systemd_docker_config_directory }}/kolla.conf"
+        force: yes
+    - name: Ensure docker.etc directory is existed
+      file:
+        path: "/etc/docker"
+        state: directory
+    - name: Ensure docker.json had contents
+      copy:
+        src: ../config/daemon.json
+        dest: /etc/docker/daemon.json
+        force: yes
+    - name: Find out the vm support
+      shell: |
+        egrep -c '(vmx|svm)' /proc/cpuinfo
+      register: vm_num
+      ignore_errors: yes
+    - name: Ensure nova-compute.conf had folder
+      file:
+        path: /etc/kolla/config/nova
+        state: directory
+      when: vm_num.stdout|int == 0
+    - name: Ensure nova-compute.conf had contents
+      copy:
+        src: ../config/nova-compute.conf
+        dest: /etc/kolla/config/nova/nova-compute.conf
+      when: vm_num.stdout|int == 0
+    - name: Ensure config had folder
+      file:
+        path: /etc/kolla/config/
+        state: directory
+    - name: Ensure ceph.conf had contents
+      copy:
+        src: ../config/ceph.conf
+        dest: /etc/kolla/config/ceph.conf
+    - name: Restart docker systemd to take effect
+      systemd:
+        state: started
+        enabled: yes
+        daemon_reload: yes
+        name: docker
     # - name: Ensure the target folder existed
     #   file:
     #     path: "{{ item }}"
