@@ -27,8 +27,8 @@
         path: "/etc/docker"
         state: directory
     - name: Ensure docker.json had contents
-      template:
-        src: daemon.json.j2
+      copy:
+        src: ../config/daemon.json
         dest: /etc/docker/daemon.json
         force: yes
     - name: Make sure docker is running
