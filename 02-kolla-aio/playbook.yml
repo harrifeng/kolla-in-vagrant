@@ -35,19 +35,17 @@
       file:
         path: ~/.pip
         state: directory
-    # - name: pip mirror
-    #   template:
-    #     src: pip.conf.j2
-    #     dest: ~/.pip/pip.conf
-    #     force: yes
-    # - name: Install Pip Packages
-    #   pip:
-    #     name: "{{ item }}"
-    #     state: present
-    #   with_items:
-    #     - pip
-    #     - ansible
-    #     - docker
+    - name: pip mirror
+      template:
+        src: pip.conf.j2
+        dest: ~/.pip/pip.conf
+        force: yes
+    - name: Install Pip Packages
+      pip:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - http://10.0.111.111:5001/kolla-ansible-4.0.2.tar.gz
     # - name: Diable selinux
     #   selinux:
     #     state: disabled
