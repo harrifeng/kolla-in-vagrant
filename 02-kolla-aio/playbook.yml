@@ -11,22 +11,21 @@
     ext_net_cidr:    "{{ external_ip }}.0/24"
     ext_net_range:   "start={{ external_ip }}.100,end={{ external_ip }}.200"
     ext_net_gateway: "{{ external_ip }}.1"
+    rpm_packages:
+      - docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
+      - python2-pip-8.1.2-5.el7.noarch.rpm
+      - libffi-devel-3.0.13-18.el7.x86_64.rpm
+      - gcc-4.8.5-11.el7.x86_64.rpm
+      - openssl-devel-1.0.1e-60.el7.x86_64.rpm
+      - libselinux-python-2.5-6.el7.x86_64.rpm
+      - ca-certificates-2017.2.14-70.1.el7_3.noarch.rpm
+      - ntp-4.2.6p5-25.el7.centos.x86_64.rpm
   tasks:
-    - name: Install list of packages
-      package:
+    - name: Install list of packages from local
+      yum:
         name: "{{ item }}"
         state: present
-      with_items:
-        - epel-release
-        - python-pip
-        - python-devel
-        - libffi-devel
-        - gcc
-        - openssl-devel
-        - libselinux-python
-        - traceroute
-        - ca-certificates
-        - ntp
+      with_items: "{{ rpm_packages }}"
     - name: Make sure the root bashrc
       template:
         src: bashrc.j2
