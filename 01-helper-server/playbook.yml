@@ -33,6 +33,20 @@
         state: started
         enabled: True
         daemon_reload: yes
+    - name: Make sure the /vagrant/pypi existed
+      file:
+        path: /vagrant/pypi
+        state: directory
+    - name: Make sure the pipi server is running
+      docker_container:
+        name: pypi
+        state: started
+        image: codekoala/pypi
+        restart_policy: always
+        ports:
+          - "5002:80"
+        volumes:
+          - "/vagrant/pypi:/srv/pypi:rw"
     - name: Make sure the httpd server is running
       docker_container:
         name: httpd
