@@ -3,7 +3,6 @@
   sudo: yes
 
   vars:
-    systemd_docker_config_directory: /etc/systemd/system/docker.service.d
     network_interface:          enp0s8
     neutron_external_interface: enp0s9
     kolla_internal_vip_address: "{{ '.'.join(vars['ansible_' + vars['network_interface']]['ipv4']['address'].split('.')[:3] + ['222']) }}"
@@ -24,7 +23,6 @@
       - http://10.0.111.111:5001/ca-certificates-2017.2.14-70.1.el7_3.noarch.rpm
       - http://10.0.111.111:5001/ntp-4.2.6p5-25.el7.centos.x86_64.rpm
       - http://10.0.111.111:5001/python-devel-2.7.5-48.el7.x86_64.rpm
-      - http://10.0.111.111:5001/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
   tasks:
     - name: Make sure the root bashrc
       copy:
@@ -76,12 +74,6 @@
       copy:
         src: ../config/ceph.conf
         dest: /etc/kolla/config/ceph.conf
-    - name: Restart docker systemd to take effect
-      systemd:
-        state: started
-        enabled: yes
-        daemon_reload: yes
-        name: docker
     - name: Modify the etc hosts file
       copy:
         src: ../config/hosts
