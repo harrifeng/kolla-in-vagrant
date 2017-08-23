@@ -11,6 +11,9 @@ download_if_not_here 'httpd' 'ansible-2.3.1.0.tar.gz' 'https://pypi.tuna.tsinghu
 download_if_not_here 'httpd' 'docker-2.5.0-py2.py3-none-any.whl' 'https://pypi.tuna.tsinghua.edu.cn/packages/f7/7c/df4972f7d0016816e9be14f91389f3be123cd8af2bbdcce3394e30a430ce'
 download_if_not_here 'httpd' 'kolla-ansible-4.0.2.tar.gz' 'https://pypi.tuna.tsinghua.edu.cn/packages/03/e5/46cb6aa513698254680a8dbec7279703c5a17379478851b03f6d4f440f68'
 download_if_not_here 'httpd' 'python-openstackclient-3.12.0.tar.gz' 'https://pypi.tuna.tsinghua.edu.cn/packages/e1/a6/25eb5bbb1064bd4203771fd504a717341fcd7d5c7fb9d91beab966d41191'
+download_if_not_here 'httpd' 'Jinja2-2.3.tar.gz' 'https://pypi.tuna.tsinghua.edu.cn/packages/08/b9/cefc15a27d9315b5d83a8010c1b19d4dcad1c68c99e0c38d704ce37f9e9d'
+download_if_not_here 'httpd' 'websocket_client-0.43.0.tar.gz' 'https://pypi.tuna.tsinghua.edu.cn/packages/7d/9e/78606598c47b77405ef82212c51558084f64614c8a160fcad1881a6ab2db'
+download_if_not_here 'httpd' 'pbr-2.0.0.tar.gz' 'https://pypi.tuna.tsinghua.edu.cn/packages/35/a5/3d1beff9fc149b3da814419369a8c24ecf0d1410637fc91002989f433a1a'
 # docker
 download_if_not_here 'httpd' 'docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm' 'https://download.docker.com/linux/centos/7/x86_64/stable/Packages'
 # common rpm
