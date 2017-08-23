@@ -131,6 +131,11 @@
     - name: Gen password for /etc/kolla/passwords.yml
       shell: |
         kolla-genpwd
+    - name: Get the cirros image first
+      get_url:
+        url: http://10.0.111.111:5001/cirros-0.3.5-x86_64-disk.img
+        dest: /usr/share/cirros-0.3.5-x86_64-disk.img
+        mode: 644
     - name: Modify /usr/share/kolla-ansible/init-runonce
       lineinfile:
         path: /usr/share/kolla-ansible/init-runonce
@@ -140,5 +145,4 @@
         - { regexp: '^EXT_NET_CIDR',    line: 'EXT_NET_CIDR="{{    ext_net_cidr    }}"'}
         - { regexp: '^EXT_NET_RANGE',   line: 'EXT_NET_RANGE="{{   ext_net_range   }}"'}
         - { regexp: '^EXT_NET_GATEWAY', line: 'EXT_NET_GATEWAY="{{ ext_net_gateway }}"'}
-        - { regexp: '^IMAGE_URL=http', line: 'IMAGE_URL=http://10.0.111.111:5001/'}
         - { regexp: 'ssh-keygen -t rsa -f ~/.ssh/id_rsa', line: '    ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" '}
