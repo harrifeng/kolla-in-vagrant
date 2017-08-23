@@ -28,4 +28,4 @@ download_if_not_here 'httpd' 'centos-binary-registry-ocata.tar.gz' 'http://tarba
 
 # cloud image
 download_if_not_here 'httpd' 'cirros-0.3.5-x86_64-disk.img' 'http://download.cirros-cloud.net/0.3.5'
-downlaod_if_not_here 'httpd' 'xenial-server-cloudimg-amd64-disk1.img' 'http://cloud-images.ubuntu.com/xenial/current'
+download_if_not_here 'httpd' 'xenial-server-cloudimg-amd64-disk1.img' 'http://cloud-images.ubuntu.com/xenial/current'
