@@ -29,10 +29,6 @@
       file:
         path: /etc/kolla/config/
         state: directory
-    - name: Ensure ceph.conf had contents
-      copy:
-        src: ceph.conf
-        dest: /etc/kolla/config/ceph.conf
     - name: Modify the etc hosts file
       copy:
         src: hosts
@@ -63,9 +59,9 @@
         - { regexp: '^docker_registry',            line: 'docker_registry: 10.0.111.111:5000'}
         - { regexp: '^docker_namespace',           line: 'docker_namespace: lokolla'}
         - { regexp: '^kolla_install_type',         line: 'kolla_install_type: binary'}
-        # - { regexp: '^enable_cinder',              line: 'enable_cinder: "yes"'}
-        # - { regexp: '^enable_ceph',                line: 'enable_ceph: "yes"'}
-        # - { regexp: '^enable_ceph_rgw',            line: 'enable_ceph_rgw: "yes"'}
+        - { regexp: '^enable_cinder',              line: 'enable_cinder: "yes"'}
+        - { regexp: '^enable_ceph',                line: 'enable_ceph: "yes"'}
+        - { regexp: '^enable_ceph_rgw',            line: 'enable_ceph_rgw: "yes"'}
     - name: Gen password for /etc/kolla/passwords.yml
       shell: |
         kolla-genpwd
