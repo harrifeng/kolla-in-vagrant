@@ -60,6 +60,7 @@
         - { regexp: '^kolla_internal_vip_address', line: 'kolla_internal_vip_address: "{{ kolla_internal_vip_address }}"'}
         - { regexp: '^keystone_admin_password',    line: 'keystone_admin_password: welcome'} # only source deploy can use this password
         - { regexp: '^openstack_release',          line: 'openstack_release: 4.0.3'}
+        - { regexp: '^docker_registry',            line: 'docker_registry: 10.0.111.111:5000'}
         - { regexp: '^docker_namespace',           line: 'docker_namespace: lokolla'}
         - { regexp: '^kolla_install_type',         line: 'kolla_install_type: binary'}
         # - { regexp: '^enable_cinder',              line: 'enable_cinder: "yes"'}
@@ -77,5 +78,4 @@
         - { regexp: '^EXT_NET_CIDR',    line: 'EXT_NET_CIDR="{{    ext_net_cidr    }}"'}
         - { regexp: '^EXT_NET_RANGE',   line: 'EXT_NET_RANGE="{{   ext_net_range   }}"'}
         - { regexp: '^EXT_NET_GATEWAY', line: 'EXT_NET_GATEWAY="{{ ext_net_gateway }}"'}
-        - { regexp: '^IMAGE_URL=http', line: 'IMAGE_URL=http://10.0.111.111:5001/'}
         - { regexp: 'ssh-keygen -t rsa -f ~/.ssh/id_rsa', line: '    ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" '}
