@@ -33,10 +33,17 @@
         state: started
         enabled: True
         daemon_reload: yes
-    - name: Make sure the /vagrant/pypi existed
+    - name: Make sure the /srv/pypi existed
       file:
-        path: /vagrant/pypi
+        path: /srv/pypi
         state: directory
+    - name: install the latest pip, pip download requares pip 9.0
+      pip:
+        name: pip
+        state: latest
+    - name: Put the corresponding file under /srv/pypi through pip download
+      shell: |
+        pip download --dest="/srv/pypi" pip==9.0.1 kolla-ansible==4.0.2 docker==2.5.1 python-openstackclient==3.12.0 ansible==2.3.2.0
     - name: Make sure the pipi server is running
       docker_container:
         name: pypi
@@ -46,7 +53,7 @@
         ports:
           - "5002:80"
         volumes:
-          - "/vagrant/pypi:/srv/pypi:rw"
+          - "/srv/pypi:/srv/pypi:rw"
     - name: Make sure the httpd server is running
       docker_container:
         name: httpd
