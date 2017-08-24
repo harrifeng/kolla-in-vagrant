@@ -1,0 +1,72 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    systemd_docker_config_directory: /etc/systemd/system/docker.service.d
+    pypi_packages:
+      - ansible
+      - docker
+      - python-openstackclient
+      - kolla-ansible
+    rpm_packages:
+      - http://10.0.111.111:5001/python2-pip-8.1.2-5.el7.noarch.rpm
+      - http://10.0.111.111:5001/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
+      - http://10.0.111.111:5001/libffi-devel-3.0.13-18.el7.x86_64.rpm
+      - http://10.0.111.111:5001/gcc-4.8.5-11.el7.x86_64.rpm
+      - http://10.0.111.111:5001/openssl-devel-1.0.1e-60.el7.x86_64.rpm
+      - http://10.0.111.111:5001/libselinux-python-2.5-6.el7.x86_64.rpm
+      - http://10.0.111.111:5001/ca-certificates-2017.2.14-70.1.el7_3.noarch.rpm
+      - http://10.0.111.111:5001/ntp-4.2.6p5-25.el7.centos.x86_64.rpm
+      - http://10.0.111.111:5001/python-devel-2.7.5-48.el7.x86_64.rpm
+  tasks:
+    - name: Make sure the root bashrc
+      copy:
+        src: bashrc
+        dest: ~/.bashrc
+        force: yes
+    - name: Install list of packages from local
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ rpm_packages }}"
+    - name: Install Pip Packages
+      pip:
+        name: "{{ item }}"
+        state: present
+        extra_args: "-i http://10.0.111.111:5002/simple --trusted-host 10.0.111.111"
+      with_items: "{{ pypi_packages }}"
+    - name: Make sure ntp is running
+      systemd:
+        state: started
+        name: ntpd
+    - name: Make sure firewalld is disabled
+      systemd:
+        state: stopped
+        name: firewalld
+    - name: Diable selinux
+      selinux:
+        state: disabled
+    - name: Ensure docker.service directory is existed
+      file:
+        path: "{{ systemd_docker_config_directory }}"
+        state: directory
+    - name: Ensure kolla.conf had contents
+      copy:
+        src: kolla.conf
+        dest: "{{ systemd_docker_config_directory }}/kolla.conf"
+        force: yes
+    - name: Ensure docker.etc directory is existed
+      file:
+        path: "/etc/docker"
+        state: directory
+    - name: Ensure docker.json had contents
+      copy:
+        src: daemon.json
+        dest: /etc/docker/daemon.json
+        force: yes
+    - name: Restart docker systemd to take effect
+      systemd:
+        state: started
+        enabled: yes
+        daemon_reload: yes
+        name: docker
