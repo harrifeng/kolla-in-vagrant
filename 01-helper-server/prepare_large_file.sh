@@ -1,8 +1,3 @@
-# pip
-pip install -U pip              # lastest version of pip is a must
-pip download --dest="pypi" pip==9.0.1 kolla-ansible==4.0.2 docker==2.5.1 python-openstackclient==3.12.0 ansible==2.3.2.0
-
-
 function download_if_not_here {
     if [ -f "$1/$2" ]; then
         echo "$1/$2 is already here"
@@ -29,3 +24,8 @@ download_if_not_here 'httpd' 'centos-binary-registry-ocata.tar.gz' 'http://tarba
 # cloud image
 download_if_not_here 'httpd' 'cirros-0.3.5-x86_64-disk.img' 'http://download.cirros-cloud.net/0.3.5'
 download_if_not_here 'httpd' 'xenial-server-cloudimg-amd64-disk1.img' 'http://cloud-images.ubuntu.com/xenial/current'
+
+
+# pip
+pip install -U pip              # lastest version of pip is a must
+pip download --dest="pypi" pip==9.0.1 kolla-ansible==4.0.2 docker==2.5.1 python-openstackclient==3.12.0 ansible==2.3.2.0
