@@ -2,6 +2,7 @@
 - hosts: all
   sudo: yes
   vars:
+    systemd_docker_config_directory: /etc/systemd/system/docker.service.d
     pypi_packages:
       - ansible
       - docker
