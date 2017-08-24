@@ -43,7 +43,11 @@
         state: latest
     - name: Put the corresponding file under /srv/pypi through pip download
       shell: |
-        pip download --dest="/srv/pypi" pip==9.0.1 kolla-ansible==4.0.2 docker==2.5.1 python-openstackclient==3.12.0 ansible==2.3.2.0
+        pip download -i http://mirrors.aliyun.com/pypi/simple \
+        --trusted-host=mirrors.aliyun.com \
+        --dest=/srv/pypi pip==9.0.1 \
+        kolla-ansible==4.0.2 docker==2.5.1 \
+        python-openstackclient==3.12.0 ansible==2.3.2.0
     - name: Make sure the pipi server is running
       docker_container:
         name: pypi
