@@ -12,16 +12,11 @@
     ext_net_range:   "start={{ external_ip }}.100,end={{ external_ip }}.200"
     ext_net_gateway: "{{ external_ip }}.1"
     pypi_packages:
-      # - ansible
-      # - docker
-      # - python-openstackclient
-      # - pip
+      - ansible
+      - docker
+      - python-openstackclient
+      - pip
       - kolla-ansible
-      # - docker
-      # - http://10.0.111.111:5001/ansible-2.3.1.0.tar.gz
-      # - http://10.0.111.111:5001/docker-2.5.0-py2.py3-none-any.whl
-      # - http://10.0.111.111:5001/python-openstackclient-3.12.0.tar.gz
-      # - http://10.0.111.111:5001/kolla-ansible-4.0.2.tar.gz
     rpm_packages:
       - http://10.0.111.111:5001/python2-pip-8.1.2-5.el7.noarch.rpm
       - http://10.0.111.111:5001/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
@@ -46,7 +41,7 @@
     - name: Install Pip Packages
       pip:
         name: "{{ item }}"
-        state: latest
+        state: present
         extra_args: "-i http://10.0.111.111:5002/simple --trusted-host 10.0.111.111"
       with_items: "{{ pypi_packages }}"
     # - name: Make sure ntp is running
