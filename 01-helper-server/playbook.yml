@@ -1,0 +1,100 @@
+---
+- hosts: all
+  sudo: yes
+
+  tasks:
+    - name: Make sure the /vagrant/httpd existed
+      file:
+        path: /vagrant/httpd
+        state: directory
+    - name: Install packages from local
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - /vagrant/httpd/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
+        - /vagrant/httpd/python2-pip-8.1.2-5.el7.noarch.rpm
+        - /vagrant/httpd/python-devel-2.7.5-48.el7.x86_64.rpm
+    - name: Install Pip Packages from local
+      pip:
+        name: /vagrant/httpd/docker-2.5.0-py2.py3-none-any.whl
+    - name: Ensure docker.etc directory is existed
+      file:
+        path: "/etc/docker"
+        state: directory
+    - name: Ensure docker.json had contents
+      copy:
+        src: ../config/daemon.json
+        dest: /etc/docker/daemon.json
+        force: yes
+    - name: Make sure docker is running
+      systemd:
+        name: docker
+        state: started
+        enabled: True
+        daemon_reload: yes
+    - name: Make sure the /srv/pypi existed
+      file:
+        path: /srv/pypi
+        state: directory
+    - name: install the latest pip, pip download requares pip 9.0
+      pip:
+        name: pip
+        state: latest
+    - name: Put the corresponding file under /srv/pypi through pip download
+      shell: |
+        pip download -i http://mirrors.aliyun.com/pypi/simple \
+        --trusted-host=mirrors.aliyun.com \
+        --dest=/srv/pypi pip==9.0.1 \
+        kolla-ansible==4.0.2 docker==2.5.1 \
+        python-openstackclient==3.12.0 ansible==2.3.2.0
+    - name: Make sure the pipi server is running
+      docker_container:
+        name: pypi
+        state: started
+        image: codekoala/pypi
+        restart_policy: always
+        ports:
+          - "5002:80"
+        volumes:
+          - "/srv/pypi:/srv/pypi:rw"
+    - name: Make sure the httpd server is running
+      docker_container:
+        name: httpd
+        state: started
+        image: httpd:2.4
+        restart_policy: always
+        ports:
+          - "5001:80"
+        volumes:
+          - "/vagrant/httpd:/usr/local/apache2/htdocs"
+    - name: Make sure the directory for docker image is existed
+      file:
+        path: /opt/registry
+        state: directory
+    - name: registry repo folder existance judge
+      stat:
+        path: /opt/registry/docker/registry/v2/repositories/lokolla
+      register: repo_st
+    - name: Judge docker image centos-binary-registry-ocata.tar.gz is existed
+      stat:
+        path: /vagrant/httpd/centos-binary-registry-ocata.tar.gz
+      register: gz_st
+    - name: Download the image file first
+      fail:
+        msg: "You should download centos-binary-registry-ocata.tar.gz first"
+      when: not gz_st.stat.exists
+    - name: unzip the file to /opt/registry
+      shell: |
+        tar zxvf /vagrant/httpd/centos-binary-registry-ocata.tar.gz -C /opt/registry/
+      when: not repo_st.stat.exists
+    - name: Make sure the registry2 is running
+      docker_container:
+        name: registry
+        state: started
+        image: registry:2
+        restart_policy: always
+        ports:
+          - "5000:5000"
+        volumes:
+          - "/opt/registry:/var/lib/registry"

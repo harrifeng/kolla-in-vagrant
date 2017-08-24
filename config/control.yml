@@ -1,9 +1,7 @@
----
+---                             # install base.yml first
 - hosts: all
   sudo: yes
-
   vars:
-    systemd_docker_config_directory: /etc/systemd/system/docker.service.d
     network_interface:          enp0s8
     neutron_external_interface: enp0s9
     kolla_internal_vip_address: "{{ '.'.join(vars['ansible_' + vars['network_interface']]['ipv4']['address'].split('.')[:3] + ['222']) }}"
@@ -12,80 +10,6 @@
     ext_net_range:   "start={{ external_ip }}.100,end={{ external_ip }}.200"
     ext_net_gateway: "{{ external_ip }}.1"
   tasks:
-    - name: Install list of packages
-      package:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - epel-release
-        - python-pip
-        - python-devel
-        - libffi-devel
-        - gcc
-        - openssl-devel
-        - libselinux-python
-        - traceroute
-        - ca-certificates
-        - ntp
-        - libselinux-python
-    - name: Make sure the root bashrc
-      template:
-        src: bashrc.j2
-        dest: ~/.bashrc
-        force: yes
-    - name: Make sure the pip folder
-      file:
-        path: ~/.pip
-        state: directory
-    - name: pip mirror
-      template:
-        src: pip.conf.j2
-        dest: ~/.pip/pip.conf
-        force: yes
-    - name: Install Pip Packages
-      pip:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - pip
-        - ansible
-        - docker
-    - name: Diable selinux
-      selinux:
-        state: disabled
-    - name: Make sure some service is disabled
-      systemd:
-        state: stopped
-        name: "{{ item }}"
-      with_items:
-        - firewalld
-    - name: Ensure docker and dependencies are installed
-      yum:
-        list: "docker-ce"
-      register: pkg
-    - name: Install docker rpm from a remote repo
-      yum:
-        name: /vagrant/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
-        state: present
-      when: pkg.results|selectattr("yumstate", "match", "installed")|list|length == 0
-    - name: Ensure docker.service directory is existed
-      file:
-        path: "{{ systemd_docker_config_directory }}"
-        state: directory
-    - name: Ensure kolla.conf had contents
-      template:
-        src: kolla.conf.j2
-        dest: "{{ systemd_docker_config_directory }}/kolla.conf"
-        force: yes
-    - name: Ensure docker.etc directory is existed
-      file:
-        path: "/etc/docker"
-        state: directory
-    - name: Ensure docker.json had contents
-      template:
-        src: daemon.json.j2
-        dest: /etc/docker/daemon.json
-        force: yes
     - name: Find out the vm support
       shell: |
         egrep -c '(vmx|svm)' /proc/cpuinfo
@@ -97,35 +21,19 @@
         state: directory
       when: vm_num.stdout|int == 0
     - name: Ensure nova-compute.conf had contents
-      template:
-        src: nova-compute.conf.j2
+      copy:
+        src: nova-compute.conf
         dest: /etc/kolla/config/nova/nova-compute.conf
       when: vm_num.stdout|int == 0
     - name: Ensure config had folder
       file:
         path: /etc/kolla/config/
         state: directory
-    - name: Ensure ceph.conf had contents
-      template:
-        src: ceph.conf.j2
-        dest: /etc/kolla/config/ceph.conf
-    - name: Restart docker systemd to take effect
-      systemd:
-        state: started
-        enabled: yes
-        daemon_reload: yes
-        name: docker
-    - name: Make sure ntp is running
-      systemd:
-        state: started
-        name: ntpd
-    - name: Install Pip Packages
-      pip:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - kolla-ansible
-        - python-openstackclient
+    - name: Modify the etc hosts file
+      copy:
+        src: hosts
+        dest: /etc/hosts
+        force: yes
     - name: Ensure the target folder existed
       file:
         path: "{{ item }}"
@@ -136,7 +44,7 @@
     - name: Get contents from /usr/share/kolla-ansible
       shell: |
         cp -r /usr/share/kolla-ansible/etc_examples/kolla/* /etc/kolla/
-        cp -r /usr/share/kolla-ansible/ansible/inventory/all-in-one /root/inventory/all-in-one
+        cp -r /usr/share/kolla-ansible/ansible/inventory/* /root/inventory*
     - name: Modify /etc/kolla/globals.yml
       lineinfile:
         path: /etc/kolla/globals.yml
@@ -148,7 +56,7 @@
         - { regexp: '^kolla_internal_vip_address', line: 'kolla_internal_vip_address: "{{ kolla_internal_vip_address }}"'}
         - { regexp: '^keystone_admin_password',    line: 'keystone_admin_password: welcome'} # only source deploy can use this password
         - { regexp: '^openstack_release',          line: 'openstack_release: 4.0.3'}
-        - { regexp: '^docker_registry',            line: 'docker_registry: 10.0.23.111:5000'}
+        - { regexp: '^docker_registry',            line: 'docker_registry: 10.0.111.111:5000'}
         - { regexp: '^docker_namespace',           line: 'docker_namespace: lokolla'}
         - { regexp: '^kolla_install_type',         line: 'kolla_install_type: binary'}
         - { regexp: '^enable_cinder',              line: 'enable_cinder: "yes"'}
