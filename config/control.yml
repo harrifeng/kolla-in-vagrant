@@ -22,7 +22,7 @@
       when: vm_num.stdout|int == 0
     - name: Ensure nova-compute.conf had contents
       copy:
-        src: ../config/nova-compute.conf
+        src: nova-compute.conf
         dest: /etc/kolla/config/nova/nova-compute.conf
       when: vm_num.stdout|int == 0
     - name: Ensure config had folder
@@ -31,11 +31,11 @@
         state: directory
     - name: Ensure ceph.conf had contents
       copy:
-        src: ../config/ceph.conf
+        src: ceph.conf
         dest: /etc/kolla/config/ceph.conf
     - name: Modify the etc hosts file
       copy:
-        src: ../config/hosts
+        src: hosts
         dest: /etc/hosts
         force: yes
     - name: Ensure the target folder existed
