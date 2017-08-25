@@ -15,9 +15,10 @@
         - /vagrant/httpd/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
         - /vagrant/httpd/python2-pip-8.1.2-5.el7.noarch.rpm
         - /vagrant/httpd/python-devel-2.7.5-48.el7.x86_64.rpm
-    - name: Install Pip Packages from local
+    - name: Install Pip Packages
       pip:
-        name: /vagrant/httpd/docker-2.5.0-py2.py3-none-any.whl
+        name: docker
+        state: present
     - name: Ensure docker.etc directory is existed
       file:
         path: "/etc/docker"
