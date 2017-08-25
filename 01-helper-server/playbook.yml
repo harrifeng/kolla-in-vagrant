@@ -15,9 +15,10 @@
         - /vagrant/httpd/docker-ce-17.06.0.ce-1.el7.centos.x86_64.rpm
         - /vagrant/httpd/python2-pip-8.1.2-5.el7.noarch.rpm
         - /vagrant/httpd/python-devel-2.7.5-48.el7.x86_64.rpm
-    - name: Install Pip Packages from local
+    - name: Install Pip Packages
       pip:
-        name: /vagrant/httpd/docker-2.5.0-py2.py3-none-any.whl
+        name: docker
+        state: present
     - name: Ensure docker.etc directory is existed
       file:
         path: "/etc/docker"
@@ -45,9 +46,10 @@
       shell: |
         pip download -i http://mirrors.aliyun.com/pypi/simple \
         --trusted-host=mirrors.aliyun.com \
-        --dest=/srv/pypi pip==9.0.1 \
-        kolla-ansible==4.0.2 docker==2.5.1 \
-        python-openstackclient==3.12.0 ansible==2.3.2.0
+        --dest=/srv/pypi ansible==2.3.2.0\
+        docker==2.5.1 \
+        kolla-ansible==4.0.2 \
+        python-openstackclient==3.12.0
     - name: Make sure the pipi server is running
       docker_container:
         name: pypi
