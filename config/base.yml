@@ -19,11 +19,10 @@
       - http://10.0.111.111:5001/ntp-4.2.6p5-25.el7.centos.x86_64.rpm
       - http://10.0.111.111:5001/python-devel-2.7.5-48.el7.x86_64.rpm
   tasks:
-    - name: Make sure the root bashrc
+    - name: Make sure the dot ssh folder existed
       copy:
-        src: bashrc
-        dest: ~/.bashrc
-        force: yes
+        src: dotssh/
+        dest: /root/.ssh/
     - name: Install list of packages from local
       yum:
         name: "{{ item }}"
