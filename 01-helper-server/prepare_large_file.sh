@@ -19,7 +19,7 @@ download_if_not_here 'httpd' 'ntp-4.2.6p5-25.el7.centos.x86_64.rpm' 'ftp://195.2
 download_if_not_here 'httpd' 'python-devel-2.7.5-48.el7.x86_64.rpm' 'ftp://195.220.108.108/linux/centos/7.3.1611/os/x86_64/Packages/'
 
 # kolla image
-download_if_not_here 'httpd' 'centos-binary-registry-ocata.tar.gz' 'http://tarballs.openstack.org/kolla/images'
+download_if_not_here 'httpd' 'centos-source-registry-ocata.tar.gz' 'http://tarballs.openstack.org/kolla/images'
 
 # cloud image
 download_if_not_here 'httpd' 'cirros-0.3.5-x86_64-disk.img' 'http://download.cirros-cloud.net/0.3.5'

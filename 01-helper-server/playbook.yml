@@ -78,17 +78,17 @@
       stat:
         path: /opt/registry/docker/registry/v2/repositories/lokolla
       register: repo_st
-    - name: Judge docker image centos-binary-registry-ocata.tar.gz is existed
+    - name: Judge docker image centos-source-registry-ocata.tar.gz is existed
       stat:
-        path: /vagrant/httpd/centos-binary-registry-ocata.tar.gz
+        path: /vagrant/httpd/centos-source-registry-ocata.tar.gz
       register: gz_st
     - name: Download the image file first
       fail:
-        msg: "You should download centos-binary-registry-ocata.tar.gz first"
+        msg: "You should download centos-source-registry-ocata.tar.gz first"
       when: not gz_st.stat.exists
     - name: unzip the file to /opt/registry
       shell: |
-        tar zxvf /vagrant/httpd/centos-binary-registry-ocata.tar.gz -C /opt/registry/
+        tar zxvf /vagrant/httpd/centos-source-registry-ocata.tar.gz -C /opt/registry/
       when: not repo_st.stat.exists
     - name: Make sure the registry2 is running
       docker_container:
