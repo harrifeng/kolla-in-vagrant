@@ -1,0 +1,8 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+    - name: Ensure ceph.conf had contents
+      copy:
+        src: ceph.conf
+        dest: /etc/kolla/config/ceph.conf
